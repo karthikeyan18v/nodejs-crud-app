@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Application</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    
+    <!-- Header -->
+        <header id="header">
+            <nav>
+                <div class="container">
+                    <div class="text-center">
+                        <a href="/" class="nav-brand text-dark">Student Management System</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    <!-- /Header -->
+     
+  <!-- Main Site -->
+  <main id="site-main">
+    <div class="container">
+        <div class="box-nav d-flex justify-between">
+           <div class="filter">
+               <a href="/"><i class="fas fa-angle-double-left"></i> All Users</a>
+           </div>
+        </div>
+        <div class="form-title text-center">
+            <h2 class="text-dark">Update User</h2>
+            <span class="text-light">Use the below form to Update an account</span>
+        </div>
+
+        <!-- update user form -->
+         <!-- form handling -->
+ <form method="POST" id="update_user">
+    <div class="new_user">
+        <div class="form-group">
+            <label for="name" class="text-light">Name</label>
+            <input type="hidden" name="id" value="<%= users._id %>">
+            <input type="text" name="name" value="<%= users.name %>" placeholder="Issac Newton">
+        </div>
+        <div class="form-group">
+            <label for="Email" class="text-light">Email</label>
+            <input type="text" name="email" value="<%= users.email%>" placeholder="example@gmail.com">
+        </div>
+        <div class="form-group">
+            <label for="CGPA" class="text-light">CGPA</label>
+            <input type="text" name="CGPA" value="<%= users.cgpa%>" placeholder="10.0" max="4">
+        </div>
+        <div class="form-group">
+            <label for="gender" class="text-light">Gender</label>
+            <div class="radio inline">
+                <input type="radio" id="radio-2" name="gender" value="Male"  <%= users.gender == 'Male' ? 'checked' : '' %>>
+                <label for="radio-2" class="radio-label">Male</label>
+            </div>
+            <div class="radio inline">
+                <input type="radio" id="radio-3" name="gender" value="Female"  <%= users.gender == 'Female' ? 'checked' : '' %>>
+                <label for="radio-3" class="radio-label">Female</label>
+            </div>
+        </div>
+
+        
+        <div class="form-group">
+            <button type="submit" class="btn text-dark update">Update</button>
+        </div>
+
+    </div>
+</form>
+       
+    </div>
+</main>
+<!-- /Main Site -->
+
+<script>
+    $("#update_user").submit(function(event){
+    event.preventDefault();
+   
+    var unindexed_array = $(this).serializeArray();
+    var data = {}
+
+    $.map(unindexed_array, function(n, i){
+        data[n['name']] = n['value']
+    })
+
+    
+    var request = {
+        "url" : `http://localhost:8080/api/student/${data.id}`,
+        "method" : "PUT",
+        "data" : data
+        
+    }
+    
+
+    $.ajax(request).done(function(response){
+        alert("Data Updated Successfully!");
+    })
+    
+})
+
+</script>
+</body>
+</html>
